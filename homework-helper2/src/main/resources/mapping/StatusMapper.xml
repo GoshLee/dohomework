@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.helper.mapper.StatusMapper">
+  <resultMap id="BaseResultMap" type="com.helper.pojo.Status">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="s_id" jdbcType="VARCHAR" property="sId" />
+    <result column="h_id" jdbcType="BIGINT" property="hId" />
+    <result column="s_finish" jdbcType="TINYINT" property="sFinish" />
+    <result column="c_id" jdbcType="VARCHAR" property="cId" />
+  </resultMap>
+
+
+  <update id="stuFinishHomework">
+    update status
+    set s_finish = 1
+    where h_id = #{hId} and s_id = #{sId}
+  </update>
+
+  <select id="myHomeworkAndStatus" parameterType="String" resultMap="HomeworkAndStatus">
+    select h.h_desc,h.h_id,h.h_start_time,h.h_end_time,t.t_name,s.s_finish
+    from status s, homework h , teacher t
+    where s.`s_id`=#{sId} and t.`t_id`=h.`t_id` AND h.`h_id`=s.`h_id` AND t.`t_id`=h.`t_id`
+    order by h_start_time
+    desc
+  </select>
+  <resultMap id="HomeworkAndStatus" type="com.helper.pojo.HomeworkAndStatus">
+    <result column="h_id" jdbcType="BIGINT" property="hId" />
+    <result column="s_finish" jdbcType="TINYINT" property="sFinish" />
+    <result column="h_desc" jdbcType="VARCHAR" property="hDesc" />
+    <result column="h_time" jdbcType="VARCHAR" property="hTime" />
+    <result column="t_name" jdbcType="VARCHAR" property="tName" />
+  </resultMap>
+
+
+  <select id="unFinishNum" resultType="java.lang.Integer">
+      select count(*)
+      from status
+      where h_id = #{hId} and s_finish=0
+  </select>
+  <select id="finishNum" resultType="java.lang.Integer">
+    select count(*)
+      from status
+      where h_id = #{hId} and s_finish=1
+  </select>
+
+</mapper>

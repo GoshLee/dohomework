@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>发布页面</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/stu.css">
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="css/component.css" />
+    <link rel="icon" href="img/login.ico" type="image/x-icon">
+    <link rel="Shortcut Icon" href="img/login.ico" type="image/x-icon">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/teacher.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/input.js"></script>
+
+</head>
+<body>
+<header>
+    <a href="javascript:logout();" class="login">注销</a>
+    <label id="user_id" class="login"></label>
+    <a class="login" href="#">
+        <i class="fa fa-user-circle"></i>
+    </a>
+</header>
+<main>
+    <div class="container">
+        <section class="content">
+            <h2>Hello teacher</h2>
+            <span class="input input--kaede">
+					<input class="input__field input__field--kaede" type="text" id="cId" name="cId"/>
+					<label class="input__label input__label--kaede" for="cId">
+						<span class="input__label-content input__label-content--kaede">班级</span>
+					</label>
+				</span>
+            <span class="input input--kaede">
+					<input class="input__field input__field--kaede" type="text" id="hName" name="hName"/>
+					<label class="input__label input__label--kaede" for="hName">
+						<span class="input__label-content input__label-content--kaede">作业名称</span>
+					</label>
+				</span>
+            <span class="input input--kaede">
+					<input class="input__field input__field--kaede" type="text" id="hTime" name="hTime"/>
+					<label class="input__label input__label--kaede" for="hTime">
+						<span class="input__label-content input__label-content--kaede">截止日期</span>
+					</label>
+				</span>
+
+            <div class="">
+                <button  class="btn-1" onclick="post()"><font size="5">发布</font></button>
+            </div>
+
+        </section>
+
+
+        <div id="dg" style="z-index: 9999; position: fixed ! important; right: 35px; bottom: 35px;">
+            <table width=""100% style="position: absolute; width:260px; right: 35px; bottom: 35px;">
+                <img href="" class="d1" src="img/xiazai.png">
+            </table>
+        </div>
+    </div>
+
+</main>
+
+
+<script>
+    (function() {
+        // trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+        if (!String.prototype.trim) {
+            (function() {
+                // Make sure we trim BOM and NBSP
+                var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+                String.prototype.trim = function() {
+                    return this.replace(rtrim, '');
+                };
+            })();
+        }
+
+        [].slice.call( document.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
+            // in case the input is already filled..
+            if( inputEl.value.trim() !== '' ) {
+                classie.add( inputEl.parentNode, 'input--filled' );
+            }
+
+            // events:
+            inputEl.addEventListener( 'focus', onInputFocus );
+            inputEl.addEventListener( 'blur', onInputBlur );
+        } );
+
+        function onInputFocus( ev ) {
+            classie.add( ev.target.parentNode, 'input--filled' );
+        }
+
+        function onInputBlur( ev ) {
+            if( ev.target.value.trim() === '' ) {
+                classie.remove( ev.target.parentNode, 'input--filled' );
+            }
+        }
+    })();
+</script>
+</body>
+
+</html>

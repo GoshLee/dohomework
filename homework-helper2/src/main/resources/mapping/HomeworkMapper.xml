@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.helper.mapper.HomeworkMapper">
+  <resultMap id="BaseResultMap" type="com.helper.pojo.Homework">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="h_id" jdbcType="BIGINT" property="hId" />
+    <result column="h_desc" jdbcType="VARCHAR" property="hDesc" />
+    <result column="t_id" jdbcType="VARCHAR" property="tId" />
+    <result column="c_id" jdbcType="VARCHAR" property="cId" />
+    <result column="h_start_time" jdbcType="BIGINT" property="hStartTime" />
+    <result column="h_end_time" jdbcType="BIGINT" property="hEndTime" />
+    <result column="h_folder_name" jdbcType="VARCHAR" property="hFolderName" />
+  </resultMap>
+
+  <select id="myHomeworks" parameterType="String" resultMap="BaseResultMap">
+    select * from homework
+    where c_id = #{cId}
+    order by h_start_time
+    DESC
+  </select>
+
+  <select id="homework" parameterType="String" resultMap="BaseResultMap">
+    select * from homework
+    where t_id = #{teacherId}
+    order by h_start_time
+    DESC
+  </select>
+
+
+  <select id="countHomeworkByCId" resultType="java.lang.Long">
+      select COUNT(*) from homework
+      where c_id=#{cId}
+    </select>
+
+  <insert id="insertAndReturnKey" parameterType="com.helper.pojo.Homework"
+   useGeneratedKeys="true" keyProperty="hId">
+    insert into homework
+    (h_desc, t_id, c_id, h_start_time, h_end_time, h_folder_name)
+    values
+    (#{hDesc}, #{tId} , #{cId}, #{hStartTime}, #{hEndTime}, #{hFolderName})
+
+  </insert>
+
+  <select id="countHomework" resultType="java.lang.Integer">
+    select count(*)
+    from homework
+    where t_id = #{teacerId}
+  </select>
+
+</mapper>

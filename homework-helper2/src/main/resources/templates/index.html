@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>homewoker</title>
+
+      <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+      <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="http://localhost/doHomework/css/bootstrap.min.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="http://localhost/doHomework/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="http://localhost/doHomework/css/simple-line-icons.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="http://localhost/doHomework/css/stylish-portfolio.min.css" rel="stylesheet">
+      <script src="http://localhost/doHomework/js/jquery.min.js"></script>
+      <!--动态背景-->
+      <script src="http://localhost/doHomework/js/bootstrap.js"></script>
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navigation -->
+    <a class="menu-toggle rounded" href="#">
+      <i class="fas fa-bars"></i>
+    </a>
+    <nav id="sidebar-wrapper">
+      <ul class="sidebar-nav">
+        <li class="sidebar-brand">
+          <a class="js-scroll-trigger" href="#page-top">Start Bootstrap</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="js-scroll-trigger" href="#page-top">你</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="js-scroll-trigger" href="#about">别</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="js-scroll-trigger" href="#services">看</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="js-scroll-trigger" href="#portfolio">了</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="js-scroll-trigger" href="#contact">！</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Header -->
+    <header class="masthead d-flex">
+      <div class="container text-center my-auto">
+        <h1 class="mb-1">快交作业！</h1>
+        <h3 class="mb-5">
+          <em>作业做完没？</em>
+        </h3>
+
+        <div id="start">
+
+        </div>
+      </div>
+      <div class="overlay"></div>
+    </header>
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    <style type="text/css">
+      .col-center-block{
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        float: none;
+      }
+
+    </style>
+
+  </body>
+
+
+  <script>
+function upLoadFile(e) {
+    var hId = e.id;
+    var form = document.getElementById('upload'+hId);
+    file = new FormData(form);
+    $.ajax({ 
+     url:"http://localhost/doHomework/stu/upHomework?hId="+hId,
+     type:"post", 
+     data:file,
+     processData:false, 
+     contentType:false, 
+     success:function(res){ 
+      if(res.status==201){
+       alert("上传成功！");
+       $(location).attr('href', 'http://localhost/doHomework/index');
+
+      }else {
+          alert("上传失败")
+      }
+     }, 
+     error:function(err){ 
+      alert("网络连接失败,稍后重试",err); 
+     } 
+    
+    })
+   }
+
+   $(function () {
+       $.ajax({
+           url: 'http://localhost/doHomework/stu/myHomework',
+           contentType:"application/json",
+           type:'get',
+           dataType:'json',
+           success:function (data) {
+               console.log('请求成功：'+data.data[0].hId)
+               for(i in data.data){
+                   var finish = "";
+                   if (data.data[i].sFinish==1){
+                       finish="已提交";
+                   } else {
+                       finish = "未完成";
+                   }
+                   var tr;
+                   tr='<form id="upload'+data.data[i].hId+'" enctype="multipart/form-data" method="post" ><input width="20%" class="form-control" type="text" readonly=true value="'+data.data[i].hDesc+'" aria-readonly="true"></input><input width="20%" class="form-control" type="text" readonly=true value="'+finish+'" aria-readonly="true"></input><div class="form-group col-center-block" ><input  style="position: absolute;left: 30%;" type="file" name="file" id="file" class="form-control-file"/><button type="button" class="btn btn-primary btn-xl js-scroll-trigger" onclick="upLoadFile(this);" style="background-color:#1d809f" id="'+data.data[i].hId+'">上传</button></div></form>\n'
+                   $("#start").append('<div>'+tr+'</div><br>')
+               }
+           }
+       })
+   })
+
+</script>
+</html>
